@@ -6,7 +6,8 @@
 replicas: 3
 
 ## The kafka image repository
-image: "confluentinc/cp-kafka"
+#image: "confluentinc/cp-kafka"
+image: "datasinkio/datasinkio"
 
 ## The kafka image tag
 imageTag: "4.0.0"
