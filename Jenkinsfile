@@ -12,9 +12,17 @@ node {
 
     stage('Deploy kube cluster') {
 
-        sh "/usr/local/bin/kops create -f kopsconfig.yaml --state s3://datasink1"
-        //kops create secret --name datasink1.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
-        //kops update cluster datasink1.k8s.local --yes
+        sh "/usr/local/bin/kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
+        sh "/usr/local/bin/kops create secret --name jenkinds.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
+        sh "/usr/local/bin/kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
 
+    }
+    stage('Validate cluster creation') {
+
+        //sh "/usr/local/bin/kops validate cluster --state s3://datasink1"
+    }
+    stage('Tear down cluster') {
+        
+        //sh "/usr/local/bin/kops delete cluster --name jenkins.k8s.local --state s3://datasink1 --yes"
     }
 }
