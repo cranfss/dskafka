@@ -12,7 +12,7 @@ node {
 
     stage('Deploy kube cluster') {
 
-        sh "/usr/local/bin/kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
+        //sh "/usr/local/bin/kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
         sh "/usr/local/bin/kops create secret --name jenkinds.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
         sh "/usr/local/bin/kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
 
