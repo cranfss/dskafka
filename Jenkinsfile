@@ -20,7 +20,7 @@ node {
     }
     stage('Validate cluster creation') {
 
-        //sh "kops validate cluster --name jenkins.k8s.local --state s3://datasink1"
+        sh "kops validate cluster --name jenkins.k8s.local --state s3://datasink1"
     }
     stage('Tear down cluster') {
         
