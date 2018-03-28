@@ -12,9 +12,9 @@ node {
 
     stage('Deploy kube cluster') {
 
-        kops create -f kopsconfig.yaml
-        kops create secret --name datasink1.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
-        kops update cluster datasink1.k8s.local --yes
+        sh "kops create -f kopsconfig.yaml"
+        //kops create secret --name datasink1.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
+        //kops update cluster datasink1.k8s.local --yes
 
     }
 }
