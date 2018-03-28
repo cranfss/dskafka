@@ -12,18 +12,18 @@ node {
 
     stage('Deploy kube cluster') {
 
-        //sh "/usr/local/bin/kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
-        sh "/usr/local/bin/kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
-        sh "/usr/local/bin/kops create secret --name jenkins.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
-        sh "/usr/local/bin/kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
+        sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
+        sh "kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
+        sh "kops create secret --name jenkins.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
+        sh "kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
 
     }
     stage('Validate cluster creation') {
 
-        //sh "/usr/local/bin/kops validate cluster --state s3://datasink1"
+        //sh "kops validate cluster --name jenkins.k8s.local --state s3://datasink1"
     }
     stage('Tear down cluster') {
         
-        //sh "/usr/local/bin/kops delete cluster --name jenkins.k8s.local --state s3://datasink1 --yes"
+        //sh "kops delete cluster --name jenkins.k8s.local --state s3://datasink1 --yes"
     }
 }
