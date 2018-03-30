@@ -20,6 +20,16 @@ node {
     }
     stage('Validate cluster creation') {
 
+        timeout(time: 5, unit: 'MINUTES') {
+            waitUntil {
+               script {
+                 def r = sh script: 'kops validate cluster --name jenkins.k8s.local --state s3://datasink', returnStatus: true
+                 return (r == 0);
+               }
+            }
+        }
+    }
+
         sh "kops validate cluster --name jenkins.k8s.local --state s3://datasink1"
     }
     stage('Tear down cluster') {
