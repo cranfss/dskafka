@@ -29,9 +29,6 @@ node {
             }
         }
     }
-
-        sh "kops validate cluster --name jenkins.k8s.local --state s3://datasink1"
-    }
     stage('Tear down cluster') {
         
         //sh "kops delete cluster --name jenkins.k8s.local --state s3://datasink1 --yes"
