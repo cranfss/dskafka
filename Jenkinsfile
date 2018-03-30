@@ -31,9 +31,9 @@ node {
     }
     stage('Deploy Kafka Helm Chart') {
         //export HELM_HOME=$HOME/.helm
-        helm init
-        helm repo add dskafka https://cranfss.github.io/dskafka
-        helm install --name kafka dskafka/dfkafka
+        sh "helm init"
+        sh "helm repo add dskafka https://cranfss.github.io/dskafka"
+        sh "helm install --name kafka dskafka/dfkafka"
 
     }
     stage('Tear down cluster') {
