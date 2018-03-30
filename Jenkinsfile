@@ -29,6 +29,13 @@ node {
             }
         }
     }
+    stage('Deploy Kafka Helm Chart') {
+        //export HELM_HOME=$HOME/.helm
+        helm init
+        helm repo add dskafka https://cranfss.github.io/dskafka
+        helm install --name kafka dskafka/dfkafka
+
+    }
     stage('Tear down cluster') {
         
         //sh "kops delete cluster --name jenkins.k8s.local --state s3://datasink1 --yes"
