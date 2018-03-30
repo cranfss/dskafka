@@ -30,9 +30,12 @@ node {
         }
     }
     stage('Deploy Kafka Helm Chart') {
-        //export HELM_HOME=$HOME/.helm
+        echo 'helm init deployes tiller in kube cluster'
         sh "helm init"
         sh "helm repo add dskafka https://cranfss.github.io/dskafka"
+        echo  'Starting sleep to allow tiller startup'
+        sleep 10
+        echo  'Finished sleep'
         sh "helm install --name kafka dskafka/dfkafka"
 
     }
