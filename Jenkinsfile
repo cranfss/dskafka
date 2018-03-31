@@ -16,7 +16,6 @@ node {
         sh "kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
         sh "kops create secret --name jenkins.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
         sh "kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
-        sh "kubectl create secret generic docker-config --from-file=$HELM_HOME/.docker/config.json"
 
     }
     stage('Validate cluster creation') {
@@ -31,6 +30,9 @@ node {
         }
     }
     stage('Deploy Kafka Helm Chart') {
+
+        sh "kubectl create secret generic docker-config --from-file=$HELM_HOME/.docker/config.json"
+        
         echo 'helm init deployes tiller in kube cluster'
         sh "helm init"
         sh "helm repo add dskafka https://cranfss.github.io/dskafka"
