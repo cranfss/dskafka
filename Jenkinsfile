@@ -31,8 +31,9 @@ node {
     }
     stage('Deploy Kafka Helm Chart') {
 
-        sh "kubectl create secret generic docker-config --from-file=$HELM_HOME/.docker/config.json"
-        
+        sh "kubectl create secret generic docker-config --from-file=$HOME/.docker/config.json"
+        sh "kubectl create secret generic kube-config --from-file=$HOME/.kube/config"
+
         echo 'helm init deployes tiller in kube cluster'
         sh "helm init"
         sh "helm repo add dskafka https://cranfss.github.io/dskafka"
