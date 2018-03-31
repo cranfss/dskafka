@@ -31,8 +31,11 @@ node {
     }
     stage('Deploy Kafka Helm Chart') {
 
-        sh "kubectl create secret generic docker-config --from-file=$HOME/.docker/config.json"
-        sh "kubectl create secret generic kube-config --from-file=$HOME/.kube/config"
+         withCredentials([string(credentialsId: '', variable: 'dockerhub-pw')]) {
+            sh 'echo pwd=$dockerhub-pw'
+        }
+        sh "kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=Lanz#Pe0rl --docker-email=datasinkio"
+        sh 'kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"docker-secret\"}]}"'
 
         echo 'helm init deployes tiller in kube cluster'
         sh "helm init"
