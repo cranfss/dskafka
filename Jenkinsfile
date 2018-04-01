@@ -32,12 +32,12 @@ node {
 
         environment {
                 DOCKERHUB_PW = credentials('dockerhub-pw')
-    }
+        }
         sh 'echo "******************"'
         sh 'echo $DOCKERHUB_PW'
-        sh "echo $DOCKERHUB_PW"
+        sh 'echo $DOCKERHUB_PW'
 
-        sh "kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio"
+        sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio'
         sh 'kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"docker-secret\"}]}"'
 
         echo 'helm init deployes tiller in kube cluster'
