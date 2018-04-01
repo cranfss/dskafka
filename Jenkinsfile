@@ -4,9 +4,9 @@
 
 pipeline {
     agent any
-    environment {
+    /*environment {
             DOCKERHUB_PW = credentials('dockerhub-pw')
-    }
+    }*/
     stages {
         stage('Clone repository') {
             /* Let's make sure we have the repository cloned to our workspace */
