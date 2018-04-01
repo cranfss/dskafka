@@ -3,7 +3,8 @@
  */
 
 pipeline {
-     environment {
+    agent any
+    environment {
             DOCKERHUB_PW = credentials('dockerhub-pw')
     }
     stages {
