@@ -3,13 +3,14 @@
  */
 
 node {
-
+    environment {
+                DOCKERHUB_PW = credentials('dockerhub-pw')
+    }
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
 
         checkout scm
     }
-
     stage('Deploy kube cluster') {
 
         sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
@@ -20,7 +21,7 @@ node {
     }
     stage('Validate cluster creation') {
 
-        timeout(time: 6, unit: 'MINUTES') {
+        timeout(time: 8, unit: 'MINUTES') {
             waitUntil {
                script {
                  def r = sh script: "kops validate cluster --name jenkins.k8s.local --state s3://datasink1", returnStatus: true
@@ -34,7 +35,7 @@ node {
          withCredentials([string(credentialsId: '', variable: 'dockerhub-pw')]) {
             sh 'echo pwd=$dockerhub-pw'
         }
-        sh "kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=Lanz#Pe0rl --docker-email=datasinkio"
+        sh "kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio"
         sh 'kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"docker-secret\"}]}"'
 
         echo 'helm init deployes tiller in kube cluster'
