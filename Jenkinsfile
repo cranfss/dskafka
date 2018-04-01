@@ -32,9 +32,6 @@ node {
     }
     stage('Deploy Kafka Helm Chart') {
 
-         withCredentials([string(credentialsId: '', variable: 'dockerhub-pw')]) {
-            sh 'echo pwd=$dockerhub-pw'
-        }
         sh "kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio"
         sh 'kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"docker-secret\"}]}"'
 
