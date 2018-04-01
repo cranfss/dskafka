@@ -12,6 +12,9 @@ node {
         checkout scm
     }
     stage('Deploy kube cluster') {
+        sh 'echo "******************"'
+        sh 'echo $DOCKERHUB_PW'
+        sh "echo $DOCKERHUB_PW"
 
         sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
         sh "kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
@@ -31,6 +34,10 @@ node {
         }
     }
     stage('Deploy Kafka Helm Chart') {
+
+        sh 'echo "******************"'
+        sh 'echo $DOCKERHUB_PW'
+        sh "echo $DOCKERHUB_PW"
 
         sh "kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio"
         sh 'kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"docker-secret\"}]}"'
