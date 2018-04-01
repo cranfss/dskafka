@@ -9,12 +9,12 @@ pipleline {
     stages {
         stage('Clone repository') {
             /* Let's make sure we have the repository cloned to our workspace */
-            step {
+            steps {
                 checkout scm
             }
         }
         stage('Deploy kube cluster') {
-            step {
+            steps {
                 sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
                 sh "kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
                 sh "kops create secret --name jenkins.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
@@ -22,7 +22,7 @@ pipleline {
             }
         }
         stage('Validate cluster creation') {
-            step {
+            steps {
                 timeout(time: 8, unit: 'MINUTES') {
                     waitUntil {
                        script {
@@ -34,7 +34,7 @@ pipleline {
             }
         }
         stage('Deploy Kafka Helm Chart') {
-            step {
+            steps {
 
                 sh 'echo "******************"'
                 sh 'echo $DOCKERHUB_PW'
