@@ -2,7 +2,7 @@
     This is the main pipeline section with the stages of the CI/CD
  */
 
-pipleline {
+pipeline {
      environment {
             DOCKERHUB_PW = credentials('dockerhub-pw')
     }
