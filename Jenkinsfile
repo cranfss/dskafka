@@ -3,6 +3,9 @@
  */
 
 pipleline {
+     environment {
+            DOCKERHUB_PW = credentials('dockerhub-pw')
+    }
     stages {
         stage('Clone repository') {
             /* Let's make sure we have the repository cloned to our workspace */
@@ -32,9 +35,7 @@ pipleline {
         }
         stage('Deploy Kafka Helm Chart') {
             step {
-                environment {
-                        DOCKERHUB_PW = credentials('dockerhub-pw')
-                }
+
                 sh 'echo "******************"'
                 sh 'echo $DOCKERHUB_PW'
 
