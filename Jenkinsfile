@@ -4,9 +4,18 @@
 
 pipeline {
     agent any
-    /*environment {
+    environment {
             DOCKERHUB_PW = credentials('dockerhub-pw')
-    }*/
+            
+            /* AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
+            AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key') */
+
+            AWS_CREDENTIALS = credentials('aws-cred')
+            AWS_ACCESS_KEY_ID = "${env.AWS_CREDENTIALS_USR}"
+            AWS_SECRET_ACCESS_KEY = "${env.AWS_CREDENTIALS_PSW}"
+            
+            /* KUBECONFIG = credentials('kubernetes-operator_kubernetes') */
+    }
     stages {
         stage('Clone repository') {
             /* Let's make sure we have the repository cloned to our workspace */
@@ -37,7 +46,7 @@ pipeline {
         stage('Deploy Kafka Helm Chart') {
             steps {
 
-                sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=Lanz#Pe0rl --docker-email=datasinkio'
+                sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio'
                 /*sh "kubectl patch serviceaccount default -p '{\'imagePullSecrets\': [{\'name\': \'docker-secret\'}]}'"*/
 
                 sh 'chmod +x ./serviceaccount.sh'
@@ -49,7 +58,7 @@ pipeline {
                 sh "helm init"
                 sh "helm repo add dskafka https://cranfss.github.io/dskafka"
                 echo  'Starting sleep to allow tiller startup'
-                sleep 10
+                sleep 20
                 echo  'Finished sleep'
                 sh "helm install --name kafka dskafka/dfkafka"
             }
