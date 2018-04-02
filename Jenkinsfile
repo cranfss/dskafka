@@ -39,7 +39,10 @@ pipeline {
 
                 sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=Lanz#Pe0rl --docker-email=datasinkio'
                 /*sh "kubectl patch serviceaccount default -p '{\'imagePullSecrets\': [{\'name\': \'docker-secret\'}]}'"*/
+
+                echo 'Running serveraccount.sh script'
                 sh './serviceaccount.sh'
+                echo 'Done - Running serveraccount.sh script'
 
 
                 echo 'helm init deployes tiller in kube cluster'
