@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Deploy kube cluster') {
             steps {
-                sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a"
+                sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a --node-size=t2.large"
                 sh "kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
                 sh "kops create secret --name jenkins.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
                 sh "kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
