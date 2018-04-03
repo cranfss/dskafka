@@ -63,6 +63,7 @@ pipeline {
                 sleep 20
                 echo  'Finished sleep'
                 sh "helm install --name kafka dskafka/dfkafka"
+                sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"
             }
         }
         /*stage('Tear down cluster') {
