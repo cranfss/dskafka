@@ -134,11 +134,6 @@ persistence:
   ##
   # storageClass:
 
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/probe: kafka
-    prometheus.io/port: "9200"
-
 # ------------------------------------------------------------------------------
 # Zookeeper:
 # ------------------------------------------------------------------------------
