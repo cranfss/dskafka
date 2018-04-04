@@ -18,6 +18,7 @@ spec:
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9200'
+        prometheus.io/name: 'kafka'
       labels:
         app: {{ include "kafka.name" . | quote }}
         release: {{ .Release.Name | quote }}
