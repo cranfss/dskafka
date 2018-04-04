@@ -58,12 +58,12 @@ pipeline {
 
                 echo 'helm init deployes tiller in kube cluster'
                 sh "helm init"
-                sh "helm repo add dskafka https://cranfss.github.io/dskafka"
+                /*sh "helm repo add dskafka https://cranfss.github.io/dskafka"
                 echo  'Starting sleep to allow tiller startup'
                 sleep 20
                 echo  'Finished sleep'
                 sh "helm install --name kafka dskafka/dfkafka"
-                sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"
+                sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"*/
             }
         }
         /*stage('Tear down cluster') {
