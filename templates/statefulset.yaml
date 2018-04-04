@@ -18,7 +18,6 @@ spec:
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9200'
-        prometheus.io/name: 'kafka'
       labels:
         app: {{ include "kafka.name" . | quote }}
         release: {{ .Release.Name | quote }}
@@ -80,7 +79,6 @@ spec:
           failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         ports:
         - containerPort: 9200
-          name: kafkapro
         - containerPort: 9092
           name: kafka
         {{- if .Values.external.enabled }}

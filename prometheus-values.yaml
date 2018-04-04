@@ -707,7 +707,7 @@ serverFiles:
         metrics_path: /metrics
         static_configs:
           - targets:
-            - localhost:9200
+            - kafka:9200
 
       # A scrape configuration for running Prometheus on a Kubernetes cluster.
       # This uses separate scrape configs for cluster components (i.e. API server, node)
