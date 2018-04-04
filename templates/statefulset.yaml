@@ -78,7 +78,6 @@ spec:
           successThreshold: {{ .Values.readinessProbe.successThreshold }}
           failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         ports:
-        - containerPort: 9200
         - containerPort: 9092
           name: kafka
         {{- if .Values.external.enabled }}
