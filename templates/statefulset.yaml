@@ -15,9 +15,6 @@ spec:
   replicas: {{ default 3 .Values.replicas }}
   template:
     metadata:
-      annotations:
-        prometheus.io/scrape: 'true'
-        prometheus.io/port: '9200'
       labels:
         app: {{ include "kafka.name" . | quote }}
         release: {{ .Release.Name | quote }}
