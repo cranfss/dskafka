@@ -104,11 +104,11 @@ configurationOverrides:
   #   PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
 
 ## The jmx port to use for brokers.  Will expose both the port and set the KAFKA_JMX_PORT env variable
-# jmxPort: 9998
+jmxPort: 9200
 
 ## A collection of additional ports to expose on brokers (formatted as normal containerPort yaml)
 # Useful when the image exposes metrics (like prometheus, etc.) through a javaagent instead of a sidecar
-additionalPorts: {  }
+additionalPorts: { 9200 }
 
 ## Persistence configuration. Specify if and how to persist data to a persistent volume.
 ##
