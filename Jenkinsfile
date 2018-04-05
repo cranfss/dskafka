@@ -45,11 +45,10 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Kafka Helm Chart') {
+        stage('Deploy Kafka Helm Charts') {
             steps {
 
                 sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio'
-                /*sh "kubectl patch serviceaccount default -p '{\'imagePullSecrets\': [{\'name\': \'docker-secret\'}]}'"*/
 
                 sh 'chmod +x ./serviceaccount.sh'
                 sh './serviceaccount.sh'
@@ -58,12 +57,12 @@ pipeline {
 
                 echo 'helm init deployes tiller in kube cluster'
                 sh "helm init"
-                /*sh "helm repo add dskafka https://cranfss.github.io/dskafka"
+                sh "helm repo add dskafka https://cranfss.github.io/dskafka"
                 echo  'Starting sleep to allow tiller startup'
                 sleep 20
                 echo  'Finished sleep'
                 sh "helm install --name kafka dskafka/dfkafka"
-                sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"*/
+                sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"
             }
         }
         /*stage('Tear down cluster') {
