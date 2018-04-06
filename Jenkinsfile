@@ -66,8 +66,8 @@ pipeline {
         stage('Verify Kafka is working') {
             steps {
 
-                sh "helm test kafka --cleanup"
-                
+                sh "helm test kafka --cleanup --timeout 300 --debug"
+
             }
         }
     }
