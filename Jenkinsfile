@@ -64,9 +64,11 @@ pipeline {
             }
         }
         stage('Verify Kafka is working') {
+            steps {
 
                 sh "helm test kafka --cleanup"
-            
+                
+            }
         }
     }
 }
