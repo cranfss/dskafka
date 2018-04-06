@@ -52,8 +52,6 @@ pipeline {
 
                 sh 'chmod +x ./serviceaccount.sh'
                 sh './serviceaccount.sh'
-                echo 'Done - Running serveraccount.sh script'
-
 
                 echo 'helm init deployes tiller in kube cluster'
                 sh "helm init"
@@ -65,9 +63,10 @@ pipeline {
                 sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"
             }
         }
-        /*stage('Tear down cluster') {
+        stage('Verify Kafka is working') {
+
+                sh "helm test kafka --cleanup"
             
-            sh "kops delete cluster --name jenkins.k8s.local --state s3://datasink1 --yes"
-        }*/
+        }
     }
 }
