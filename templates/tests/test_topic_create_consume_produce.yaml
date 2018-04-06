@@ -12,12 +12,10 @@ spec:
     - sh
     - -c
     - |
-      # Create the topic
-      kafka-topics --zookeeper {{ template "zookeeper.url" . }} --topic helm-test-topic-create-consume-produce --create --partitions 1 --replication-factor 1 --if-not-exists && \
       # Create a message
       MESSAGE="`date -u`" && \
       # Produce a test message to the topic
-      echo "$MESSAGE" | kafka-console-producer --broker-list kafka-dskafka-headless:9092 --topic helm-test-topic-create-consume-produce && \
+      echo "$MESSAGE" | /kafka/jmx_exporter/kafkacat -b kafka-dskafka-headless:9092 -t test-topic && \
       # Consume a test message from the topic
-      kafka-console-consumer --bootstrap-server kafka-dskafka:9092 --topic helm-test-topic-create-consume-produce --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$MESSAGE"
+      /kafka/jmx_exporter/kafkacat -C -b kafka-dskafka:9092 -t test-topic -e | grep "$MESSAGE"
   restartPolicy: Never
