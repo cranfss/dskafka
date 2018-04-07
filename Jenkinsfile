@@ -6,15 +6,10 @@ pipeline {
     agent any
     environment {
             DOCKERHUB_PW = credentials('dockerhub-pw')
-            
-            /* AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
-            AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key') */
 
             AWS_CREDENTIALS = credentials('aws-cred')
             AWS_ACCESS_KEY_ID = "${env.AWS_CREDENTIALS_USR}"
             AWS_SECRET_ACCESS_KEY = "${env.AWS_CREDENTIALS_PSW}"
-            
-            /* KUBECONFIG = credentials('kubernetes-operator_kubernetes') */
     }
     stages {
         stage('Clone repository') {
@@ -23,7 +18,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Deploy kube cluster') {
+        stage('Deploy Kube Cluster') {
             steps {
                 /*sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a --node-size=t2.large"*/
                 sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a --node-size=t2.large --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
@@ -32,7 +27,7 @@ pipeline {
                 sh "kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
             }
         }
-        stage('Validate cluster creation') {
+        stage('Creating Kube Cluster') {
             steps {
                 timeout(time: 8, unit: 'MINUTES') {
                     waitUntil {
@@ -44,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Kafka Helm Charts') {
+        stage('Deploying Kafka Helm Chart') {
             steps {
 
                 sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio'
@@ -59,7 +54,7 @@ pipeline {
                 sleep 20
                 echo  'Finished sleep'
                 sh "helm install --name kafka dskafka/dfkafka"
-                sh "./templates/tests/verify-release.sh"
+                sh "./templates/tests/verify-release.sh default"
                 
             }
         }
