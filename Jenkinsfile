@@ -63,7 +63,7 @@ pipeline {
         }
         stage('Verify Kafka produce/consume') {
             steps {
-                sh "helm test kafka --timeout 300 --debug"
+                sh "helm test kafka --timeout 300 --debug --cleanup"
             }
         }
         stage('Deploy Prometheus') {
