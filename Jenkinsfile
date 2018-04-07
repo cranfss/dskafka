@@ -54,7 +54,10 @@ pipeline {
                 sleep 20
                 echo  'Finished sleep'
                 sh "helm install --name kafka dskafka/dfkafka"
-                sh "./templates/tests/verify-release.sh default"
+
+                echo 'Verify Kafka Cluster if available'
+                
+                sh './verify-release.sh default'
                 
             }
         }
