@@ -6,10 +6,6 @@ set -o pipefail
 set -o xtrace
 
 NAMESPACE="${1:-}"
-if [[ -z "$NAMESPACE" ]];then
-  echo "ERROR: No namespace specified"
-  exit 1
-fi
 
 # Ensure all pods in the namespace entered a Running state
 PODS_FOUND=0
