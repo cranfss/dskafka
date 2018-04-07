@@ -59,15 +59,19 @@ pipeline {
                 sleep 20
                 echo  'Finished sleep'
                 sh "helm install --name kafka dskafka/dfkafka"
+                sh "./templates/tests/verify-release.sh"
+                
+            }
+        }
+        stage('Verify Kafka produce/consume') {
+            steps {
+                sh "helm test kafka --timeout 300 --debug"
+            }
+        }
+        stage('Deploy Prometheus') {
+            steps {
                 sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"
             }
-        }/*
-        stage('Verify Kafka is working') {
-            steps {
-
-                sh "helm test kafka --timeout 300 --debug"
-
-            }
-        }*/
+        }
     }
 }
