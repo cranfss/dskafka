@@ -18,7 +18,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Deploy Kube Cluster') {
+        stage('Create Kube Cluster Configuration') {
             steps {
                 /*sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a --node-size=t2.large"*/
                 sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a --node-size=t2.large --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
@@ -27,7 +27,7 @@ pipeline {
                 sh "kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
             }
         }
-        stage('Creating Kube Cluster') {
+        stage('Deploying Kube Cluster') {
             steps {
                 timeout(time: 8, unit: 'MINUTES') {
                     waitUntil {
@@ -57,7 +57,7 @@ pipeline {
 
                 echo 'Verify Kafka Cluster if available'
                 
-                sh './verify-release.sh default'
+                sh '/kafka/libs/verify-release.sh default'
                 
             }
         }
