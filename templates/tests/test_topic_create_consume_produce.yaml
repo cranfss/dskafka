@@ -15,7 +15,7 @@ spec:
       # Create a message
       MESSAGE="`date -u`" && \
       # Produce a test message to the topic
-      echo "$MESSAGE" | /kafka/jmx_exporter/kafkacat -b kafka-dskafka-headless:9092 -t test-topic && \
+      echo "$MESSAGE" | /kafka/libs/kafkacat -b kafka-dskafka-headless:9092 -t test-topic && \
       # Consume a test message from the topic
       /kafka/libs/kafkacat -C -b kafka-dskafka:9092 -t test-topic -e | grep "$MESSAGE"
   restartPolicy: Never
