@@ -57,13 +57,14 @@ pipeline {
 
                 echo 'Verify Kafka Cluster if available'
                 
-                sh '/kafka/libs/verify-release.sh default'
+                sh 'chmod +x ./verify-release.sh'
+                sh './verify-release.sh default'
                 
             }
         }
         stage('Verify Kafka produce/consume') {
             steps {
-                sh "helm test kafka --timeout 300 --debug --cleanup"
+                sh "helm test kafka --timeout 300 --debug"
             }
         }
         stage('Deploy Prometheus') {
