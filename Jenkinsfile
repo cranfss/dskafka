@@ -44,8 +44,8 @@ pipeline {
 
                 sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio'
 
-                sh 'chmod +x ./serviceaccount.sh'
-                sh './serviceaccount.sh'
+                sh 'chmod +x ./scripts/serviceaccount.sh'
+                sh './scripts/serviceaccount.sh'
 
                 echo 'helm init deployes tiller in kube cluster'
                 sh "helm init"
@@ -57,8 +57,8 @@ pipeline {
 
                 echo 'Verify Kafka Cluster if available'
                 
-                sh 'chmod +x ./verify-release.sh'
-                sh './verify-release.sh default'
+                sh 'chmod +x ./scripts/verify-release.sh'
+                sh './scripts/verify-release.sh default'
                 
             }
         }
