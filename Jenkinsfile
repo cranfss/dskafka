@@ -20,8 +20,13 @@ pipeline {
         }
         stage('Create Kube Cluster Configuration') {
             steps {
-                /*sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a --node-size=t2.large"*/
-                sh "kops create cluster  --name jenkins.k8s.local --state s3://datasink1 --zones us-west-1a --node-size=t2.large --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
+                sh "kops create cluster  --name ${clustername}.k8s.local \
+                    --zones ${awszone} \
+                    --node-count ${nodes} \
+                    --node-size ${instancesize} \
+                    --state s3://datasink1 \
+                    --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
+                    
                 sh "kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
                 sh "kops create secret --name jenkins.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
                 sh "kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
