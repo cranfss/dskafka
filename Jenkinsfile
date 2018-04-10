@@ -29,9 +29,9 @@ pipeline {
                     --state s3://datasink1 \
                     --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
 
-                sh "kops delete secret sshpublickey admin --name jenkins.k8s.local --state s3://datasink1"
-                sh "kops create secret --name jenkins.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
-                sh "kops update cluster jenkins.k8s.local --state s3://datasink1 --yes"
+                sh "kops delete secret sshpublickey admin --name ${clustername}.k8s.local --state s3://datasink1"
+                sh "kops create secret --name ${clustername}.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
+                sh "kops update cluster ${clustername}.k8s.local --state s3://datasink1 --yes"
             }
         }
         stage('Deploying Kube Cluster') {
@@ -39,7 +39,7 @@ pipeline {
                 timeout(time: 8, unit: 'MINUTES') {
                     waitUntil {
                        script {
-                         def r = sh script: "kops validate cluster --name jenkins.k8s.local --state s3://datasink1", returnStatus: true
+                         def r = sh script: "kops validate cluster --name ${clustername}.k8s.local --state s3://datasink1", returnStatus: true
                          return (r == 0);
                        }
                     }
