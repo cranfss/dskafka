@@ -27,7 +27,7 @@ pipeline {
                     --node-count ${nodes} \
                     --node-size ${instancesize} \
                     --state s3://datasink1 \
-                    --networking weave
+                    --networking weave \
                     --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
 
                 sh "kops delete secret sshpublickey admin --name ${clustername}.k8s.local --state s3://datasink1"
