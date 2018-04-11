@@ -102,8 +102,8 @@ configurationOverrides:
      EXTERNAL://kafka.cluster.local:$((31090 + ${KAFKA_BROKER_ID}))
   "listener.security.protocol.map": |-
      PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
-  "inter.broker.listener.name": |-
-     INTERNAL_PLAINTEXT
+  #"inter.broker.listener.name": |-
+  #   INTERNAL_PLAINTEXT
 
 ## The jmx port to use for brokers.  Will expose both the port and set the KAFKA_JMX_PORT env variable
 #jmxPort: 
