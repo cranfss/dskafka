@@ -103,7 +103,7 @@ configurationOverrides:
   "listener.security.protocol.map": |-
      PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
   "listeners": |-
-     INTERNAL_PLAINTEXT://0.0.0.0:9092,EXTERNAL_PLAINTEXT://0.0.0.0:19092
+     PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:19092
 
 ## The jmx port to use for brokers.  Will expose both the port and set the KAFKA_JMX_PORT env variable
 #jmxPort: 
