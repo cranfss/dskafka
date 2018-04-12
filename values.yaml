@@ -104,6 +104,8 @@ configurationOverrides:
      PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
   "listeners": |-
      PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:19092
+  "inter.broker.listener.name": |-
+     PLAINTEXT
 
 ## The jmx port to use for brokers.  Will expose both the port and set the KAFKA_JMX_PORT env variable
 #jmxPort: 
