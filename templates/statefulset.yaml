@@ -106,6 +106,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: {{ include "zookeeper.url" . | quote }}
@@ -131,7 +135,7 @@ spec:
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
-          export KAFKA_ADVERTISED_LISTENERS=EXTERNAL://$(KAFKA_0_EXTERNAL_SERVICE_HOST):$((31090 + ${KAFKA_BROKER_ID})) && \
+          export KAFKA_ADVERTISED_LISTENERS=EXTERNAL://$(HOST_IP):$((31090 + ${KAFKA_BROKER_ID})) && \
           /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
