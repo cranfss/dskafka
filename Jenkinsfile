@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Deploying Kube Cluster') {
             steps {
-                timeout(time: 8, unit: 'MINUTES') {
+                timeout(time: 10, unit: 'MINUTES') {
                     waitUntil {
                        script {
                          def r = sh script: "kops validate cluster --name ${clustername}.k8s.local --state s3://datasink1", returnStatus: true
