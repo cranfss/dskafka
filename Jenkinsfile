@@ -49,36 +49,36 @@ pipeline {
         }
         stage('Deploying Kafka Helm Chart') {
             steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio'
 
-                sh 'kubectl create secret docker-registry docker-secret --docker-username=datasinkio --docker-password=$DOCKERHUB_PW --docker-email=datasinkio'
+                    sh 'chmod +x ./scripts/serviceaccount.sh'
+                    sh './scripts/serviceaccount.sh'
 
-                sh 'chmod +x ./scripts/serviceaccount.sh'
-                sh './scripts/serviceaccount.sh'
+                    echo 'helm init deployes tiller in kube cluster'
+                    sh "helm init"
+                    sh "helm repo add dskafka https://cranfss.github.io/dskafka"
+                    echo  'Starting sleep to allow tiller startup'
+                    sleep 20
+                    echo  'Finished sleep'
+                    sh "helm install --name kafka dskafka/dfkafka"
 
-                echo 'helm init deployes tiller in kube cluster'
-                sh "helm init"
-                sh "helm repo add dskafka https://cranfss.github.io/dskafka"
-                echo  'Starting sleep to allow tiller startup'
-                sleep 20
-                echo  'Finished sleep'
-                sh "helm install --name kafka dskafka/dfkafka"
-
-                echo 'Verify Kafka Cluster if available'
-                
-                sh 'chmod +x ./scripts/verify-release.sh'
-                sh './scripts/verify-release.sh default'
-                
+                    echo 'Verify Kafka Cluster if available'
+                    
+                    sh 'chmod +x ./scripts/verify-release.sh'
+                    sh './scripts/verify-release.sh default'
+                }
             }
         }
         stage('Verify Kafka produce/consume') {
             steps {
                 sh "helm test kafka --timeout 300 --debug"
             }
-        }
+        }/*
         stage('Deploy Prometheus') {
             steps {
                 sh "helm install -f ./prometheus-values.yaml stable/prometheus --name prometheus --set rbac.create=false"
             }
-        }
+        }*/
     }
 }
