@@ -36,10 +36,6 @@ spec:
           - -euxc
           - "kubectl label pods ${POD_NAME} --namespace ${POD_NAMESPACE} pod=${POD_NAME}"
         env:
-          - name: NODE_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: spec.nodeName
           - name: POD_NAME
             valueFrom:
               fieldRef:
@@ -48,10 +44,6 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          - name: POD_IP
-            valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
     {{- end }}
 {{- if .Values.tolerations }}
       tolerations:
@@ -106,6 +98,10 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name: NODE_NAME
+-         valueFrom:
+-         fieldRef:
+-           fieldPath: spec.nodeName
         - name: KAFKA_LOG4J_OPTS
           value: -Dlog4j.configuration=file:/etc/kafka/log4j.properties
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
