@@ -99,9 +99,9 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
         env:
         - name: NODE_NAME
--         valueFrom:
--         fieldRef:
--           fieldPath: spec.nodeName
+          valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
         - name: KAFKA_LOG4J_OPTS
           value: -Dlog4j.configuration=file:/etc/kafka/log4j.properties
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
