@@ -98,10 +98,14 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         - name: NODE_NAME
           valueFrom:
-          fieldRef:
-            fieldPath: spec.nodeName
+            fieldRef:
+              fieldPath: spec.nodeName
         - name: KAFKA_LOG4J_OPTS
           value: -Dlog4j.configuration=file:/etc/kafka/log4j.properties
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
