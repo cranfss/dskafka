@@ -28,6 +28,7 @@ pipeline {
                     --node-size ${instancesize} \
                     --state s3://datasink1 \
                     --authorization=AlwaysAllow \
+                    --networking calico \
                     --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
 
                 sh "kops delete secret sshpublickey admin --name ${clustername}.k8s.local --state s3://datasink1"
