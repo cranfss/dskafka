@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Create Kube Cluster Configuration') {
             steps {
-                datasink1.kafka.datasinkcloud.com
+
                 sh "echo clustername=${clustername}.kafka.datasinkcloud.com zones=${awszone} node-count=${nodes} node-size=${instancesize}"
                 sh "kops create cluster  --name ${clustername}.kafka.datasinkcloud.com \
                     --zones ${awszone} \
