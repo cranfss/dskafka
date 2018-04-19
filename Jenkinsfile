@@ -21,8 +21,8 @@ pipeline {
         stage('Create Kube Cluster Configuration') {
             steps {
                 
-                sh "echo clustername=${clustername} zones=${awszone} node-count=${nodes} node-size=${instancesize}"
-                sh "kops create cluster  --name ${clustername}\
+                sh "echo clustername=${clustername}.datasinkcloud.com zones=${awszone} node-count=${nodes} node-size=${instancesize}"
+                sh "kops create cluster  --name ${clustername}.datasinkcloud.com \
                     --zones ${awszone} \
                     --node-count ${nodes} \
                     --node-size ${instancesize} \
@@ -32,9 +32,9 @@ pipeline {
                     --cloud aws \
                     --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
 
-                sh "kops delete secret sshpublickey admin --name ${clustername} --state s3://datasink1"
-                sh "kops create secret --name ${clustername} sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
-                sh "kops update cluster ${clustername} --state s3://datasink1 --yes"
+                sh "kops delete secret sshpublickey admin --name ${clustername}.datasinkcloud.com --state s3://datasink1"
+                sh "kops create secret --name ${clustername}.datasinkcloud.com sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
+                sh "kops update cluster ${clustername}.datasinkcloud.com --state s3://datasink1 --yes"
             }
         }
         stage('Deploying Kube Cluster') {
@@ -42,7 +42,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     waitUntil {
                        script {
-                         def r = sh script: "kops validate cluster --name ${clustername} --state s3://datasink1", returnStatus: true
+                         def r = sh script: "kops validate cluster --name ${clustername}.datasinkcloud.com --state s3://datasink1", returnStatus: true
                          return (r == 0);
                        }
                     }
