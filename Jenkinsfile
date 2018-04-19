@@ -33,7 +33,7 @@ pipeline {
                     --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
 
                 sh "kops delete secret sshpublickey admin --name ${clustername} --state s3://datasink1"
-                sh "kops create secret --name ${clustername}.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
+                sh "kops create secret --name ${clustername} sshpublickey admin -i ~/.ssh/id_rsa.pub --state s3://datasink1"
                 sh "kops update cluster ${clustername} --state s3://datasink1 --yes"
             }
         }
