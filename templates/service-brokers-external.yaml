@@ -12,7 +12,7 @@ kind: Service
 metadata:
   annotations:
     ## ref: https://github.com/kubernetes/kops/blob/master/dns-controller/pkg/watchers/annotations.go#L21
-  #  dns.alpha.kubernetes.io/internal: "{{ $root.Release.Name }}.{{ $root.Values.external.domain }}"
+  dns.alpha.kubernetes.io/internal: "{{ $root.Release.Name }}.{{ $root.Values.external.domain }}"
   name: {{ $root.Release.Name }}-{{ $i }}-external
   labels:
     app: {{ include "kafka.name" $root | quote }}

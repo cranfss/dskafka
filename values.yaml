@@ -77,7 +77,7 @@ external:
   enabled: true
   servicePort: 19092
   firstListenerPort: 31090
-  domain: datasinkcloud.com
+  domain: prod.datasinkcloud.com
   init:
     image: "lwolf/kubectl_deployer"
     imageTag: "0.4"
