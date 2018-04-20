@@ -63,7 +63,7 @@ pipeline {
                     echo  'Starting sleep to allow tiller startup'
                     sleep 20
                     echo  'Finished sleep'
-                    sh "helm install --name kafka dskafka/dfkafka"
+                    sh "helm install --name ${clustername} dskafka/dfkafka"
 
                     echo 'Verify Kafka Cluster if available'
                     
