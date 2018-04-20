@@ -74,7 +74,7 @@ pipeline {
         }
         stage('Verify Kafka produce/consume') {
             steps {
-                sh "helm test kafka --timeout 300 --debug"
+                sh "helm test ${clustername} --timeout 300 --debug"
             }
         }/*
         stage('Deploy Prometheus') {
