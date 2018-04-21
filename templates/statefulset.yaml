@@ -80,6 +80,8 @@ spec:
         ports:
         - containerPort: 9092
           name: kafka
+        - containerPort: 19092
+          name: outside
         {{- if .Values.external.enabled }}
           {{- $replicas := .Values.replicas | int }}
           {{- $root := . }}
