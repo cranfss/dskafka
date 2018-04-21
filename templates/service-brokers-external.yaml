@@ -23,8 +23,8 @@ spec:
   type: NodePort
   ports:
     - name: external-broker
-      port: {{ $externalListenerPort }}
-      targetPort: {{ $servicePort }}
+      port: {{ $servicePort }}
+      targetPort: {{ $externalListenerPort }}
       nodePort: {{ $externalListenerPort }}
       protocol: TCP
   selector:
