@@ -72,9 +72,14 @@ pipeline {
                 }
             }
         }
-        stage('Verify Kafka produce/consume') {
+        stage('Internal - verify Kafka produce/consume') {
             steps {
                 sh "helm test ${clustername} --timeout 300 --debug"
+            }
+        }
+        stage('External - verify Kafka produce/consume') {
+            steps {
+                      sh './scripts/verifyexternalkafka.py --numnodes ${nodes} '
             }
         }/*
         stage('Deploy Prometheus') {

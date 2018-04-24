@@ -1,16 +1,21 @@
 import json
 import subprocess
 import time
+import argparse
 from confluent_kafka import Producer
 from confluent_kafka import Consumer, KafkaError
 
- 
+parser = argparse.ArgumentParser()
+parser.add_argument("-n", "--numnodes", type=int, required=True, help="Number of worker nodes")
+args = parser.parse_args()
+print "numnodes={}".format(args.numnodes)
 
 #get list of external dns nodes in json
 nodejson = json.loads(subprocess.check_output(['kubectl', 'get', 'nodes', '-o', 'json']))
 
 nodelist = [] 
 
+#parse json to get external dns hostnames
 def getextnodenames():
 	for node in nodejson["items"]:
 		if node["metadata"]["labels"]["kubernetes.io/role"] == "master":
@@ -19,7 +24,7 @@ def getextnodenames():
 			for item in node["status"]["addresses"]:
 				if item["type"] == "ExternalDNS":
 					nodelist.append(item["address"])
-	print ('Found %d nodes' % len(nodelist))
+	print ('Expected %d nodes, found %d nodes' % (args.numnodes, len(nodelist)))
 	for items in nodelist:
 		print(items)	
 	return nodelist
@@ -36,14 +41,15 @@ topicname = "ext-test-topic"
 testmsg = time.time()
 producingnode = str(nodes[0]) + ":" + str(nodeport[0])
 consumingnode = str(nodes[1]) + ":" + str(nodeport[1])
-#kafkacat -b ec2-54-153-75-2.us-west-1.compute.amazonaws.com:31090 -t ext-test-topic
-#kafkacat -C -b  ec2-54-153-75-2.us-west-1.compute.amazonaws.com:31090 -t ext-test-topic
 
 #produce to first nodeport
 p = Producer({'bootstrap.servers': producingnode})
-p.produce(topicname, key='hello', value='world')
+p.produce(topicname, str(testmsg))
 p.flush(30)
+print('Sent message: %s' % testmsg)
 
+#give consumer a few seconds
+time.sleep(2) 
 
 #consume from second nodeport
 settings = {
@@ -56,7 +62,6 @@ settings = {
 }
 
 c = Consumer(settings)
-
 c.subscribe([topicname])
 
 while True:
@@ -65,16 +70,19 @@ while True:
         continue
     elif not msg.error():
         print('Received message: {0}'.format(msg.value()))
-        break
+        if msg.value()==str(testmsg):
+        	print "success"
+        	c.close()
+        	exit(0)
+        else:
+        	print "messages did not match"
+        	exit(1)
     elif msg.error().code() == KafkaError._PARTITION_EOF:
         print('End of partition reached {0}/{1}'
               .format(msg.topic(), msg.partition()))
-        break
+        c.close()
+        exit(1)
     else:
         print('Error occured: {0}'.format(msg.error().str()))
-        break
-
-c.close()
-
-
-#print ('Found %d nodes [%s]' % len(nodelist), ', '.join(map(str, nodelist)))
+        c.close()
+        exit(1)
