@@ -30,6 +30,7 @@ pipeline {
                     --authorization=AlwaysAllow \
                     --networking calico \
                     --cloud aws \
+                    --node-security-groups sg-0488bc93a98000e33 \
                     --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
 
                 sh "kops delete secret sshpublickey admin --name ${clustername}.prod.datasinkcloud.com --state s3://datasink1"
