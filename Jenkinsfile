@@ -31,6 +31,7 @@ pipeline {
                     --networking calico \
                     --cloud aws \
                     --vpc vpc-011182937a1c08a0c \
+                    --node-security-groups sg-0e4c56374753a2917 \
                     --image 099720109477/ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180306"
 
                 sh "kops delete secret sshpublickey admin --name ${clustername}.prod.datasinkcloud.com --state s3://datasink1"
@@ -80,6 +81,7 @@ pipeline {
         }
         stage('External - verify Kafka produce/consume') {
             steps {
+                      sh 'chmod +x ./scripts/verifyexternalkafka.py'
                       sh './scripts/verifyexternalkafka.py --numnodes ${nodes} '
             }
         }/*
