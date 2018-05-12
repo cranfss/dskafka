@@ -28,6 +28,7 @@ pipeline {
                     --node-size ${instancesize} \
                     --state s3://datasink1 \
                     --authorization=AlwaysAllow \
+                    --dns-zone prod.datasinkcloud.com \
                     --networking calico \
                     --cloud aws \
                     --vpc vpc-011182937a1c08a0c \
