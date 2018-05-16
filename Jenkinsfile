@@ -62,11 +62,17 @@ pipeline {
 
                     echo 'helm init deployes tiller in kube cluster'
                     sh "helm init"
-                    sh "helm repo add dskafka https://cranfss.github.io/dskafka"
                     echo  'Starting sleep to allow tiller startup'
                     sleep 20
                     echo  'Finished sleep'
-                    sh "helm install --name ${clustername} dskafka/dfkafka"
+
+                    sh "helm repo add dskafka https://cranfss.github.io/dskafka"
+
+                    /* helm install --name ${clustername} dskafka/dfkafka stopped working */
+                    sh "helm fetch dskafka/dskafka"
+                    
+                    /*sh "helm install --name ${clustername} dskafka/dfkafka"*/
+                    sh "helm install --name ${clustername} dskafka-0.7.1.tgz"
 
                     echo 'Verify Kafka Cluster if available'
                     
